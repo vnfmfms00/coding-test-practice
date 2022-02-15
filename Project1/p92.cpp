@@ -19,6 +19,8 @@ int main()
 	int max = INT_MIN;
 	int max_idx = -1;
 	int sec_max = INT_MIN;
+	
+	// 가장 큰 수를 구한다.
 	for (int i = 0; i < idx; i++)
 	{
 		if (max < arr[i])
@@ -28,6 +30,7 @@ int main()
 		}
 	}
 
+	// 두번째로 큰 수를 구한다
 	for (int i = 0; i < idx; i++)
 	{
 		if (max_idx == i)
@@ -39,6 +42,7 @@ int main()
 		}
 	}
 
+	// k번 가장 큰 수를 더하고, 한번은 두번쨰로 큰 수를 더하는 식으로 접근하여 total을 리턴
 	int total = 0;
 	int cnt = 1;
 	while (m--)
