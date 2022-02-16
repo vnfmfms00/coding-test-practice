@@ -27,5 +27,8 @@
     <ClCompile Include="p311.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="312.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
