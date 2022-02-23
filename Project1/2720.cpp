@@ -23,7 +23,7 @@ int main()
 	for (int i = 0; i < n; i++)
 	{
 		int idx = 0;
-		vector<int> v1(4, 0); // 거스름돈 개수를 저장할 벡터
+		vector<int> v1(4, 0); // 거스름돈 개수를 저장할 벡터.
 
 		while(true)
 		{
