@@ -43,4 +43,5 @@ int main()
 		s = s + to_string(total);
 	
 	cout << s;
+
 }
