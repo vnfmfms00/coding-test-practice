@@ -58,7 +58,7 @@ int solution(string s) {
             i += unit;
         }
 
-        // 무조건 s3문자열에 뒤의 문자열을 넣어줘야함.
+        // 무조건 s3문자열에 남은 문자열을 넣어줘야함.
         if (cnt == 1)
             s3 += s1;
         else
