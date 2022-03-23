@@ -87,6 +87,9 @@
     <ClCompile Include="p325.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="p327.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="p329.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>

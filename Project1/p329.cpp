@@ -1,142 +1,117 @@
-#include <iostream>
+#include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
-class RotInfo
+// 이 문제는 못풀었음. 다음에 다시 풀어볼것
+
+// 현재 설치된 구조물이 '가능한' 구조물인지 확인하는 함수
+bool possible(vector<vector<int>> answer)
 {
-private :
-	int x;
-	char c;
+    for (int i = 0; i < answer.size(); i++)
+    {
+        int x = answer[i][0];
+        int y = answer[i][1];
+        int a = answer[i][2];
+        // 기둥이라면 기둥 조건을 만족하는지 확인
+        if (a == 0)
+        {
+            bool check = false;
+            // 바닥 위에 있는가
+            if (y == 0)
+                check = true;
+            for (int j = 0; j < answer.size(); j++)
+            {
+                // 보의 오른쪽 끝부분 위에 있는가
+                if (x - 1 == answer[j][0] && y == answer[j][1] && 1 == answer[j][2])
+                    check = true;
+                
+                // 보의 왼쪽 끝부분 위에 있는가
+                if (x == answer[j][0] && y == answer[j][1] && 1 == answer[j][2])
+                    check = true;
 
-public :
-	RotInfo(int x, char c)
-	{
-		this -> x = x;
-		this -> c = c;
-	}
-	int GetX()
-	{
-		return this -> x;
-	}
-	char GetC()
-	{
-		return this -> c;
-	}
-};
+                // 또 다른 기둥 위에 있는가
+                if (x == answer[j][0] && y - 1 == answer[j][1] && 0 == answer[j][2])
+                    check = true;
+            }
+            // 안되는 경우라면 false리턴
+            if (check == false)
+                return false;
+        }
+        // 보 라면 보 조건을 만족 하는지 확인
+        else if (a == 1)
+        {
+            bool check = false;
+            bool left = false;
+            bool right = false;
+            for (int j = 0; j < answer.size(); j++)
+            {
+                // 왼쪽 끝부분이 기둥 위에 있는가
+                if (x == answer[j][0] && y - 1 == answer[j][1] && 0 == answer[j][2])
+                    check = true;
+                // 오른쪽 끝부분이 기둥 위에 있는가
+                if (x + 1 == answer[j][0] && y - 1 == answer[j][1] && 0 == answer[j][2])
+                    check = true;
+                // 양쪽 끝부분이 다른 보와 동시에 연결되어 있는가
+                if (x - 1 == answer[j][0] && y == answer[j][1] && 1 == answer[j][2])
+                    left = true;
+                if (x + 1 == answer[j][0] && y == answer[j][1] && 1 == answer[j][2])
+                    right = true;
+            }
+            // 양쪽 끝부분이 다른 보와 동시에 연결되어 있다면
+            if (left && right)
+                check = true;
 
-int main()
-{
-	int n;
-	cin >> n;
+            if (check == false)
+                return false;
+        }
+    }
+    return true; // false한번도 안걸리고 for문 다 돌면 true리턴
+}
+vector<vector<int>> solution(int n, vector<vector<int>> build_frame) {
+    vector<vector<int>> answer;
 
-	vector<vector<int>> v(n, vector<int>(n, 0)); // n x n 맵
+    for (int i = 0; i < build_frame.size(); i++)
+    {
+        int x = build_frame[i][0];
+        int y = build_frame[i][1];
+        int a = build_frame[i][2];
+        int b = build_frame[i][3];
 
-	int k;
-	cin >> k;
-	for (int i = 0; i < k; i++)
-	{
-		int x, y;
-		cin >> x >> y;
-		v[x - 1][y - 1] = 1;
-	}
 
-	int l;
-	cin >> l;
-	vector<RotInfo> v_r; // 방향 전환 정보 저장
-	for (int i = 0; i < l; i++)
-	{
-		int x;
-		char c;
-		cin >> x >> c;
-		RotInfo rotInfo = { x, c };
-		v_r.push_back(rotInfo);
-	}
+        // 삭제라면
+        if (b == 0)
+        {
+            int idx;
+            for (int j = 0; j < answer.size(); j++)
+            {
+                if (x == answer[j][0] && y == answer[j][1] && a == answer[j][2])
+                    idx = j;
+            }
 
-	int time = 0;
-	int x = 0, y = 0;
-	int dirIdx = 0; // 맨 처음 머리 방향 E
-	vector<char> v_dir = { 'E', 'S', 'W', 'N' };
-	vector<vector<int>> v_snakeAllPos; // 머리 + 몸통의 모든 위치 저장
-	vector<int> v_snakeHeadPos = { x, y }; // 초기 머리 위치 처장
-	v_snakeAllPos.push_back(v_snakeHeadPos);
+            vector<int> backup = answer[idx]; // 지워질 벡터 백업
+            answer.erase(answer.begin() + idx); // 일단 삭제
 
-	while (true)
-	{
-		// 시간 1 증가
-		time++;
+            // 나머지가 조건을 만족하지 않으면 복구
+            if (possible(answer) == false)
+                answer.push_back(backup);
+            // 조건을 만족하면 무시
 
-		// 머리 방향에 따라 1칸 이동(몸통은 앞에있는 몸통이나 머리 따라감), 몸통 늘림
-		switch (v_dir[dirIdx])
-		{
-		case 'E':
-			y++;
-			break;
-		case 'S':
-			x++;
-			break;
-		case 'W':
-			y--;
-			break;
-		case 'N':
-			x--;
-			break;
-		}
+        }
+        // 추가 라면
+        else if (b == 1)
+        {
+            vector<int> v = { x, y, a };
+            answer.push_back(v); // 일단 추가
 
-		// 기존 머리분을 몸통으로 추가
-		v_snakeHeadPos = { x, y }; // 새로운 머리 위치
-		vector<vector<int>>::iterator it = v_snakeAllPos.begin();
-		v_snakeAllPos.insert(it, v_snakeHeadPos); // 새로운 머리 위치를 맨 앞에 추가
+            // 조건을 만족하지 않으면 다시 뺌
+            if (possible(answer) == false)
+                answer.pop_back();
+            // 조건을 만족하면 무시
+        }
+    }
 
-		// 만약 머리가 벽에 박았으면 죽음 게임끝 time 리턴
-		if (x < 0 || x > n - 1 || y < 0 || y > n - 1)
-		{
-			cout << time << '\n';
-			return 0;
-		}
-		// 만약 머리가 꼬리에 박았으면 죽음 게임끝 time 리턴
-		for (int i = 1; i < v_snakeAllPos.size(); i++)
-		{
-			if (x == v_snakeAllPos[i][0] && y == v_snakeAllPos[i][1])
-			{
-				cout << time << '\n';
-				return 0;
-			}
-		}
-		
-		// 안죽었다면 사과 먹었는지 체크
-		// 사과 먹었다면 그대로, 아니면 몸통 축소
-		// 머리의 위치와 사과의 위치가 같으면 먹은거
-		if (v[x][y] == 1)
-		{
-			v[x][y] = 0; // 사과 없앰
-		}
-		// 사과 안먹었으면 몸통 축소
-		else
-		{
-			v_snakeAllPos.pop_back();
-		}
-
-		// 해당하는 초가 되었으면 머리 방향 바꿈
-		for (int i = 0; i < v_r.size(); i++)
-		{
-			if (time == v_r[i].GetX())
-			{
-				// 왼쪽으로 회전
-				if (v_r[i].GetC() == 'L')
-				{
-					dirIdx--;
-					if (dirIdx < 0)
-						dirIdx = v_dir.size() - 1;
-				}
-				// 오른쪽으로 회전
-				else
-				{
-					dirIdx++;
-					if (dirIdx > v_dir.size() - 1)
-						dirIdx = 0;
-				}
-			}
-		}
-	}
+    sort(answer.begin(), answer.end());
+    return answer;
 }
