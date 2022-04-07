@@ -111,7 +111,10 @@
     <ClCompile Include="p341.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="p345.cpp">
+    <ClCompile Include="p344.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="p346.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
