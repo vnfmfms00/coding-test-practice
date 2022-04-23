@@ -201,5 +201,11 @@
     <ClCompile Include="sw1491.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="sw1928.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="14888_.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
