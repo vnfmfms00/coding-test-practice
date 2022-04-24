@@ -207,5 +207,11 @@
     <ClCompile Include="14888_.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="6603_recursive.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="sw2805.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
